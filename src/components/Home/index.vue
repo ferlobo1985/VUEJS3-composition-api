@@ -1,95 +1,60 @@
 <template>
     <div>
-        <app-user :user="user" required="yes" @saySomething="fromEmit">
-            <div>I am a slot</div>
-        </app-user>
-        <button @click="changeName('SOME ARG',$event)">Change name</button>
-        <button @click="changeOccupation('GAMER')">Change occupation</button>
-
-        <hr/>
-
-        <form @submit="submitForm">
-            <input type="text" v-model="form.name"/>
-            <input type="text" v-model="form.lastname"/>
-            <button type="submit">Submit</button>
-        </form>
-
-        <hr/>
-        <div>
-            {{ message }}
-        </div>
+        {{ animal.type }}
     </div>
 </template>
 
 
 <script>
      /* eslint-disable */
-    import appUser from './user.vue';
-    import { ref, computed, watch, reactive, provide, readonly } from 'vue';
+    import { ref, unref, reactive, toRef, toRefs, isRef, shallowRef  } from 'vue';
 
     export default {
-        components:{
-            appUser
-        },
         setup(){
-            const toProvide = 'Some data to provide';
-            const form = reactive({
-                name:'Steve',
-                lastname:'Thompson'
-            });
+            const animal = shallowRef({type:'dog'});
 
-            const user = reactive({
-                age:18,
-                name:'Francis',
-                occupation:'DEV',
-                bilingual:false
-            });
+            setTimeout(()=>{
+                animal.value = {type:'cat'};
+                console.log(animal.value.type);
+            },2000)
 
-            /// PROVIDE
-            provide('data',toProvide);
-            provide('formData',readonly(form));
-            provide('mutateForm',mutateForm)
-
-            /// FUNCTIONS
-            function changeName(arg1, event){
-                user.name = 'Ronald';
+            return{
+                animal
             }
-            function mutateForm(value){
-                form.name = value
-            }
-            const changeOccupation = (arg) => {
-                user.occupation = arg;
-            }
-            const submitForm = (e) =>{
-                e.preventDefault();
-                //console.log(form);
-            }
-            const fromEmit = (arg) => {
-                console.log('FROM EMMIT !!',arg)
-            }
-          
 
 
-            // COMPUTED
-            const message = computed(()=>{
-                return `Hello, i am ${user.name} and i am a ${user.occupation}`
-            });
+            // let dog = 'Scrappy';
+
+            // if(!isRef(dog)){
+            //    dog = ref(dog);
+            // }
+            // console.log(dog)
+
+
             
-            /// WATCH
-            watch(user,(newUser,oldUser)=>{
-                // console.log(newUser,'NEW');
-                // console.log(oldUser,'OLD');
-            });
-            
-            return {
-                user,
-                form,
-                submitForm,
-                changeName,
-                changeOccupation,
-                message,
-                fromEmit
-            }            
+            // const car = reactive({
+            //     color:'Red',
+            //     year: 1985
+            // });
+
+
+            // const carToRefs = toRefs(car);
+            // console.log(carToRefs.color.value);
+            // console.log(carToRefs.year.value);
+
+
+            // carToRefs.year.value++;
+            // console.log(car.year)
+
+            // const carYearToRef = toRef(car,'year');
+            // console.log(carYearToRef.value);
+
+            // car.year++
+            // console.log(carYearToRef.value);
+
+            // carYearToRef.value++;
+            // console.log(car.year);
+
         }
     }
 </script>
