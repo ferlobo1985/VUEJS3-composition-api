@@ -1,11 +1,20 @@
 <template>
     <div>
-        <div>Hello my name is: {{ name }}</div>
-        <div>Occupation: {{ occupation }}</div>
-        <div>Bilingual: {{ lang }}</div>
-        <div>Age: {{ age }}</div>
+        <div>Hello my name is: {{ user.name }}</div>
+        <div>Occupation: {{ user.occupation }}</div>
+        <div>Bilingual: {{ user.bilingual }}</div>
+        <div>Age: {{ user.age }}</div>
         <button @click="changeName('SOME ARG',$event)">Change name</button>
         <button @click="changeOccupation('GAMER')">Change occupation</button>
+
+        <hr/>
+
+        <form @submit="submitForm">
+            <input type="text" v-model="form.name"/>
+            <input type="text" v-model="form.lastname"/>
+            <button type="submit">Submit</button>
+        </form>
+
 
         <hr/>
         <div>
@@ -17,58 +26,52 @@
 
 <script>
      /* eslint-disable */
-    import { ref, computed, watch } from 'vue';
+    import { ref, computed, watch, reactive } from 'vue';
 
     export default {
         setup(){
-            const name = ref('Francis');
-            const occupation = ref('DEV');
-            const bilingual = ref(false);
+            const form = reactive({
+                name:'',
+                lastname:''
+            });
+
+            const user = reactive({
+                age:18,
+                name:'Francis',
+                occupation:'DEV',
+                bilingual:false
+            });
 
             /// FUNCTIONS
             function changeName(arg1, event){
-                console.log(arg1);
-                console.log(event)
-                name.value = 'Ronald';
+                user.name = 'Ronald';
             }
             const changeOccupation = (arg) => {
-                occupation.value = arg;
+                user.occupation = arg;
+            }
+            const submitForm = (e) =>{
+                e.preventDefault();
+                console.log(form);
             }
             // COMPUTED
             const message = computed(()=>{
-                return `Hello, i am ${name.value} and i am a ${occupation.value}`
+                return `Hello, i am ${user.name} and i am a ${user.occupation}`
             });
+            
             /// WATCH
-            watch([occupation,name],(
-                [newOccupationValue,newName],
-                [oldOccupationValue,oldName]
-            )=>{
-
-                console.log(newOccupationValue,'NEW occ');
-                console.log(oldOccupationValue,'OLD occ');
-
-                console.log(newName,'NEW name');
-                console.log(oldName,'OLD name');
-            })
+            watch(user,(newUser,oldUser)=>{
+                console.log(newUser,'NEW');
+                console.log(oldUser,'OLD');
+            });
             
             return {
-                name: name,
-                occupation,
-                lang: bilingual,
+                user,
+                form,
+                submitForm,
                 changeName,
                 changeOccupation,
                 message
             }            
-        },
-        // watch:{
-        //     occupation(){
-        //         console.log('Occupation changed');
-        //     }
-        // },
-        data(){
-            return {
-                age:18
-            }
         }
     }
 </script>
