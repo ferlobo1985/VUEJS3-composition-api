@@ -25,16 +25,17 @@
 <script>
      /* eslint-disable */
     import appUser from './user.vue';
-    import { ref, computed, watch, reactive } from 'vue';
+    import { ref, computed, watch, reactive, provide, readonly } from 'vue';
 
     export default {
         components:{
             appUser
         },
         setup(){
+            const toProvide = 'Some data to provide';
             const form = reactive({
-                name:'',
-                lastname:''
+                name:'Steve',
+                lastname:'Thompson'
             });
 
             const user = reactive({
@@ -44,9 +45,17 @@
                 bilingual:false
             });
 
+            /// PROVIDE
+            provide('data',toProvide);
+            provide('formData',readonly(form));
+            provide('mutateForm',mutateForm)
+
             /// FUNCTIONS
             function changeName(arg1, event){
                 user.name = 'Ronald';
+            }
+            function mutateForm(value){
+                form.name = value
             }
             const changeOccupation = (arg) => {
                 user.occupation = arg;
@@ -58,6 +67,8 @@
             const fromEmit = (arg) => {
                 console.log('FROM EMMIT !!',arg)
             }
+          
+
 
             // COMPUTED
             const message = computed(()=>{
