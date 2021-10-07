@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div>Hello my name is: {{ user.name }}</div>
-        <div>Occupation: {{ user.occupation }}</div>
-        <div>Bilingual: {{ user.bilingual }}</div>
-        <div>Age: {{ user.age }}</div>
+        <app-user :user="user"/>
         <button @click="changeName('SOME ARG',$event)">Change name</button>
         <button @click="changeOccupation('GAMER')">Change occupation</button>
 
@@ -15,7 +12,6 @@
             <button type="submit">Submit</button>
         </form>
 
-
         <hr/>
         <div>
             {{ message }}
@@ -26,9 +22,13 @@
 
 <script>
      /* eslint-disable */
+    import appUser from './user.vue';
     import { ref, computed, watch, reactive } from 'vue';
 
     export default {
+        components:{
+            appUser
+        },
         setup(){
             const form = reactive({
                 name:'',
