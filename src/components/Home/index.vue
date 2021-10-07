@@ -1,6 +1,8 @@
 <template>
     <div>
-        <app-user :user="user"/>
+        <app-user :user="user" required="yes" @saySomething="fromEmit">
+            <div>I am a slot</div>
+        </app-user>
         <button @click="changeName('SOME ARG',$event)">Change name</button>
         <button @click="changeOccupation('GAMER')">Change occupation</button>
 
@@ -51,8 +53,12 @@
             }
             const submitForm = (e) =>{
                 e.preventDefault();
-                console.log(form);
+                //console.log(form);
             }
+            const fromEmit = (arg) => {
+                console.log('FROM EMMIT !!',arg)
+            }
+
             // COMPUTED
             const message = computed(()=>{
                 return `Hello, i am ${user.name} and i am a ${user.occupation}`
@@ -60,8 +66,8 @@
             
             /// WATCH
             watch(user,(newUser,oldUser)=>{
-                console.log(newUser,'NEW');
-                console.log(oldUser,'OLD');
+                // console.log(newUser,'NEW');
+                // console.log(oldUser,'OLD');
             });
             
             return {
@@ -70,7 +76,8 @@
                 submitForm,
                 changeName,
                 changeOccupation,
-                message
+                message,
+                fromEmit
             }            
         }
     }
