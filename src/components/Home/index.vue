@@ -1,59 +1,60 @@
 <template>
     <div>
-        {{ animal.type }}
+        <div>animal:{{ animal.type }}</div>
+        <div>years:{{ animal.years }}</div>
+        <div>Type:{{ animal.eyes.color}}</div>
     </div>
 </template>
 
 
 <script>
      /* eslint-disable */
-    import { ref, unref, reactive, toRef, toRefs, isRef, shallowRef  } from 'vue';
+    import {  isReadonly, reactive, readonly, ref, isReactive, shallowReactive,shallowReadonly } from 'vue';
 
     export default {
         setup(){
-            const animal = shallowRef({type:'dog'});
+            const animal = shallowReadonly({
+                type:'Dog',
+                years:5,
+                eyes:{
+                    color:'Blue'
+                }
+            });
+
+
+            animal.type = 'Cat';
+            animal.years = 10;
 
             setTimeout(()=>{
-                animal.value = {type:'cat'};
-                console.log(animal.value.type);
+                animal.eyes.color = 'Green';
+                console.log(animal)
             },2000)
 
-            return{
-                animal
-            }
+     
+            // setTimeout(()=>{
+            //     animal.eyes.color = 'Green';
+            // },2000);
 
+            // setTimeout(()=>{
+            //     animal.type = 'Lion'
+            // },4000);
 
-            // let dog = 'Scrappy';
-
-            // if(!isRef(dog)){
-            //    dog = ref(dog);
-            // }
-            // console.log(dog)
-
-
-            
-            // const car = reactive({
-            //     color:'Red',
-            //     year: 1985
+            // const animalCopy = readonly(animal);
+            // const zoo = readonly({
+            //     cages:6,
+            //     animals:0
             // });
 
+            // console.log(isReactive(animal));
+            // console.log(isReactive(animalCopy));
+            // console.log(isReactive(zoo));
 
-            // const carToRefs = toRefs(car);
-            // console.log(carToRefs.color.value);
-            // console.log(carToRefs.year.value);
+            // console.log(animalCopy.type);
+            // animalCopy.type = 'Cat';
 
-
-            // carToRefs.year.value++;
-            // console.log(car.year)
-
-            // const carYearToRef = toRef(car,'year');
-            // console.log(carYearToRef.value);
-
-            // car.year++
-            // console.log(carYearToRef.value);
-
-            // carYearToRef.value++;
-            // console.log(car.year);
+            return {
+                animal
+            }
 
         }
     }
